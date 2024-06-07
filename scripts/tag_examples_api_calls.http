@@ -1,6 +1,18 @@
-POST http://localhost:8080/api/tag
+### Create new Tag
+PUT http://localhost:8080/api/tag
 Content-Type: application/json
 
 {
-  "name": "Vegan"
+  "id": 1,
+  "name": "Lecker"
+}
+
+
+### Create new Ingredient
+PUT http://localhost:8080/api/ingredient
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Milch"
 }

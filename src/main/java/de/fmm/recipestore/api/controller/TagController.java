@@ -5,10 +5,7 @@ import de.fmm.recipestore.domain.entity.Tag;
 import de.fmm.recipestore.domain.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,8 +26,8 @@ public class TagController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping
-    public TagDto createTag(TagDto tagDto) {
+    @PutMapping
+    public TagDto createTag(@RequestBody TagDto tagDto) {
         Tag tag = modelMapper.map(tagDto, Tag.class);
         tag = tagRepository.save(tag);
         return modelMapper.map(tag, TagDto.class);
