@@ -16,6 +16,9 @@ public class Recipe {
 
     private String title;
 
+    @ManyToOne
+    private Cookbook cookbook;
+
     @ManyToMany
     private Set<Tag> tags;
 
