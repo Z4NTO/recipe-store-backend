@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: recipe-store
+  datasource:
+    url: jdbc:mysql://localhost:3307/recipestore?nullNamePatternMatchesAll=true&serverTimezone=CET
+    username: dev
+    password: dev
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
