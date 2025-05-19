@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/recipe")
 public class RecipeController {
-
+    
     @GetMapping
     public List<Recipe> getAllRecipes() {
         final Recipe recipe = new Recipe();
