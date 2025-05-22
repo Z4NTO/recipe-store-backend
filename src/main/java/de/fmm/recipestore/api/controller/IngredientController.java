@@ -1,7 +1,7 @@
 package de.fmm.recipestore.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.fmm.recipestore.api.dto.IngredientDto;
+import de.fmm.recipestore.application.dto.IngredientDto;
 import de.fmm.recipestore.domain.entity.Ingredient;
 import de.fmm.recipestore.domain.repository.IngredientRepository;
 import lombok.RequiredArgsConstructor;

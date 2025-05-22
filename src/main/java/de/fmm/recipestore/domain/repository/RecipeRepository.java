@@ -1,8 +1,12 @@
 package de.fmm.recipestore.domain.repository;
 
-import de.fmm.recipestore.domain.entity.Cookbook;
+import de.fmm.recipestore.domain.entity.Recipe;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RecipeRepository extends JpaRepository<Cookbook, Long> {
+import java.util.List;
+
+public interface RecipeRepository extends JpaRepository<Recipe, Long> {
+
+    List<Recipe> getRecipesByCookbook_Id(Long cookbookId);
 
 }

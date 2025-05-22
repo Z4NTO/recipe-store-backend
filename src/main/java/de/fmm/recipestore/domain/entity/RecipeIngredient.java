@@ -1,20 +1,19 @@
 package de.fmm.recipestore.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
 @Entity
 @Table(name = "recipe_ingredients")
+@Getter
+@Setter
 public class RecipeIngredient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false)
     private Long id;
-
-    @ManyToOne
-    private Recipe recipe;
 
     @ManyToOne
     private Ingredient ingredient;

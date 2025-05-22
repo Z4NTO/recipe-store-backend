@@ -1,4 +1,4 @@
-package de.fmm.recipestore.api.dto;
+package de.fmm.recipestore.application.dto;
 
 import lombok.Data;
 

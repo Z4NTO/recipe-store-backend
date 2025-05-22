@@ -1,12 +1,12 @@
 package de.fmm.recipestore.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-
-import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class Ingredient {
 
     @Id
@@ -15,7 +15,5 @@ public class Ingredient {
     private Long id;
 
     private String name;
-
-    @OneToMany(mappedBy = "ingredient")
-    Set<RecipeIngredient> recipes;
+    
 }

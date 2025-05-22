@@ -1,7 +1,7 @@
 package de.fmm.recipestore.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.fmm.recipestore.api.dto.CookbookDto;
+import de.fmm.recipestore.application.dto.CookbookDto;
 import de.fmm.recipestore.domain.repository.CookbookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

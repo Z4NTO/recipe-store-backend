@@ -1,9 +1,9 @@
-package de.fmm.recipestore.api.dto;
+package de.fmm.recipestore.application.dto;
 
 import lombok.Data;
 
 @Data
-public class CookbookDto {
+public class TagDto {
     private Long id;
     private String name;
 }

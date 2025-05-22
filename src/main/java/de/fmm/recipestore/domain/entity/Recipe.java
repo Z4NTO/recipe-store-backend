@@ -1,12 +1,14 @@
 package de.fmm.recipestore.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Set;
 
-@Data
 @Entity
+@Getter
+@Setter
 public class Recipe {
 
     @Id
@@ -19,10 +21,11 @@ public class Recipe {
     @ManyToOne
     private Cookbook cookbook;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Tag> tags;
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "recipe_id")
     private Set<RecipeIngredient> recipeIngredients;
 
     private String notes;
