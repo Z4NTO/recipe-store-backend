@@ -16,7 +16,7 @@ public class TagController {
     private final TagService tagService;
 
     @GetMapping("{cookbookId}")
-    public List<TagDto> getRecipesByCookbookId(@PathVariable final Long cookbookId) {
+    public List<TagDto> getTagsByCookbookId(@PathVariable final Long cookbookId) {
         return tagService.getTags(cookbookId);
     }
 
