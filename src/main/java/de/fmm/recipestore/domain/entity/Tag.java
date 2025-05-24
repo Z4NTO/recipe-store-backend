@@ -16,4 +16,7 @@ public class Tag {
 
     private String name;
 
+    @ManyToOne
+    private Cookbook cookbook;
+
 }

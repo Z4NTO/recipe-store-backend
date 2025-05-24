@@ -16,4 +16,7 @@ public class Ingredient {
 
     private String name;
     
+    @ManyToOne
+    private Cookbook cookbook;
+
 }
