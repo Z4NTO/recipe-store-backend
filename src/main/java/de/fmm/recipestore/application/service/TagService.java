@@ -1,8 +1,7 @@
 package de.fmm.recipestore.application.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.fmm.recipestore.application.dto.TagDto;
-import de.fmm.recipestore.application.mapper.TagMapper;
-import de.fmm.recipestore.domain.entity.Cookbook;
 import de.fmm.recipestore.domain.entity.Tag;
 import de.fmm.recipestore.domain.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,26 +15,19 @@ import java.util.List;
 public class TagService {
 
     private final TagRepository tagRepository;
-    private final TagMapper tagMapper;
+    private final ObjectMapper objectMapper;
 
     public List<TagDto> getTags(final Long cookbookId) {
-        final List<Tag> tags = tagRepository.findAllByCookbook_Id(cookbookId);
+        final List<Tag> tags = tagRepository.findAllByCookbookId(cookbookId);
         return tags.stream()
-                .map(tagMapper::map)
+                .map(tag -> objectMapper.convertValue(tag, TagDto.class))
                 .toList();
     }
 
     public TagDto createNewTag(@RequestBody final TagDto tagDto) {
-        final Tag tag = new Tag();
-        tag.setName(tagDto.getName());
-        if (tagDto.getCookbookId() != null) {
-            final Cookbook cookbook = new Cookbook();
-            cookbook.setId(tagDto.getCookbookId());
-            tag.setCookbook(cookbook);
-        }
+        final Tag tag = objectMapper.convertValue(tagDto, Tag.class);
         final Tag savedTag = tagRepository.save(tag);
-
-        return tagMapper.map(savedTag);
+        return objectMapper.convertValue(savedTag, TagDto.class);
     }
 
 }

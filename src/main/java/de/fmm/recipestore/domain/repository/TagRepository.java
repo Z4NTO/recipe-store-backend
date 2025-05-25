@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
-    List<Tag> findAllByCookbook_Id(Long cookbookId);
+    List<Tag> findAllByCookbookId(Long cookbookId);
 
 }

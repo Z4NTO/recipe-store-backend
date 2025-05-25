@@ -16,7 +16,7 @@ public class Tag {
 
     private String name;
 
-    @ManyToOne
-    private Cookbook cookbook;
+    @Column(name = "cookbook_id", nullable = false)
+    private Long cookbookId;
 
 }
