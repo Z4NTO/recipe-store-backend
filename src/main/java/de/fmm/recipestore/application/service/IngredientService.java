@@ -1,8 +1,7 @@
 package de.fmm.recipestore.application.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.fmm.recipestore.application.dto.IngredientDto;
-import de.fmm.recipestore.application.mapper.IngredientMapper;
-import de.fmm.recipestore.domain.entity.Cookbook;
 import de.fmm.recipestore.domain.entity.Ingredient;
 import de.fmm.recipestore.domain.repository.IngredientRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,26 +15,20 @@ import java.util.List;
 public class IngredientService {
 
     private final IngredientRepository ingredientRepository;
-    private final IngredientMapper ingredientMapper;
+    private final ObjectMapper objectMapper;
 
     public List<IngredientDto> getIngredients(final Long cookbookId) {
-        final List<Ingredient> ingredients = ingredientRepository.findAllByCookbook_Id(cookbookId);
+        final List<Ingredient> ingredients = ingredientRepository.findAllByCookbookId(cookbookId);
         return ingredients.stream()
-                .map(ingredientMapper::map)
+                .map(ingredient
+                        -> objectMapper.convertValue(ingredient, IngredientDto.class))
                 .toList();
     }
 
     public IngredientDto createNewIngredient(@RequestBody final IngredientDto ingredientDto) {
-        final Ingredient ingredient = new Ingredient();
-        ingredient.setName(ingredientDto.getName());
-        if (ingredientDto.getCookbookId() != null) {
-            final Cookbook cookbook = new Cookbook();
-            cookbook.setId(ingredientDto.getCookbookId());
-            ingredient.setCookbook(cookbook);
-        }
+        final Ingredient ingredient = objectMapper.convertValue(ingredientDto, Ingredient.class);
         final Ingredient savedIngredient = ingredientRepository.save(ingredient);
-
-        return ingredientMapper.map(savedIngredient);
+        return objectMapper.convertValue(savedIngredient, IngredientDto.class);
     }
 
 }

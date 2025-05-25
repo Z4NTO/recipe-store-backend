@@ -15,8 +15,8 @@ public class Ingredient {
     private Long id;
 
     private String name;
-    
-    @ManyToOne
-    private Cookbook cookbook;
+
+    @Column(name = "cookbook_id", nullable = false)
+    private Long cookbookId;
 
 }

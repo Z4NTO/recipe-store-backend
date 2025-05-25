@@ -22,4 +22,8 @@ public class Cookbook {
     @JoinColumn(name = "cookbook_id")
     private List<Tag> tags;
 
+    @OneToMany
+    @JoinColumn(name = "cookbook_id")
+    private List<Tag> ingredients;
+
 }
