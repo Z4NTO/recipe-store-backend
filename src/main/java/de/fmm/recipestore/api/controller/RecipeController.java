@@ -14,8 +14,8 @@ public class RecipeController {
 
     private final RecipeService recipeService;
 
-    @GetMapping("{cookbookId}")
-    public List<RecipeDto> getRecipesByCookbookId(@PathVariable final Long cookbookId) {
+    @GetMapping
+    public List<RecipeDto> getRecipesByCookbookId(@RequestParam final Long cookbookId) {
         return recipeService.getRecipes(cookbookId);
     }
 
