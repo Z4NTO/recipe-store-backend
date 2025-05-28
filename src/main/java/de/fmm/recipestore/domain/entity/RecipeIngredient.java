@@ -15,7 +15,7 @@ public class RecipeIngredient {
     @Column(updatable = false)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Ingredient ingredient;
 
     private String amount;

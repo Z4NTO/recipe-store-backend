@@ -8,6 +8,7 @@ import java.util.List;
 public class RecipeDto {
     private Long id;
     private String title;
+    private Long cookbookId;
     private List<TagDto> tags;
     private List<RecipeIngredientDto> ingredients;
     private String notes;

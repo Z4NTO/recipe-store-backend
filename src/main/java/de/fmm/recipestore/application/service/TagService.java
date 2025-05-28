@@ -5,10 +5,11 @@ import de.fmm.recipestore.application.dto.TagDto;
 import de.fmm.recipestore.domain.entity.Tag;
 import de.fmm.recipestore.domain.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,10 +25,17 @@ public class TagService {
                 .toList();
     }
 
-    public TagDto createNewTag(@RequestBody final TagDto tagDto) {
-        final Tag tag = objectMapper.convertValue(tagDto, Tag.class);
-        final Tag savedTag = tagRepository.save(tag);
-        return objectMapper.convertValue(savedTag, TagDto.class);
+    public List<Tag> mergeWithExistingTags(final List<Tag> newAndUpdatedTags) {
+        return newAndUpdatedTags.stream()
+                .map(newTag -> Optional.ofNullable(newTag)
+                        .map(Tag::getId)
+                        .flatMap(tagRepository::findById)
+                        .map(existingTag -> {
+                            BeanUtils.copyProperties(newTag, existingTag);
+                            return existingTag;
+                        })
+                        .orElse(newTag))
+                .toList();
     }
 
 }

@@ -14,6 +14,7 @@ public class Ingredient {
     @Column(updatable = false)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
     @Column(name = "cookbook_id", nullable = false)
