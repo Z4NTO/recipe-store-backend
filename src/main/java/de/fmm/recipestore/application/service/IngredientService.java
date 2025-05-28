@@ -10,7 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,14 +32,14 @@ public class IngredientService {
     }
 
     public List<RecipeIngredient> mergeWithExistingRecipeIngredients(final List<RecipeIngredient> recipeIngredients) {
-        final Map<Long, Ingredient> mergedIngredients = new HashMap<>();
+        final List<Ingredient> savedIngredients = new ArrayList<>();
         return recipeIngredients.stream()
                 .filter(Objects::nonNull)
                 .map(newRecipeIngredient -> Optional.ofNullable(newRecipeIngredient.getId())
                         .flatMap(recipeIngredientRepository::findById)
-                        .map(existingRecipeIngredient -> updateExistingRecipeIngredient(newRecipeIngredient, existingRecipeIngredient, mergedIngredients))
+                        .map(existingRecipeIngredient -> updateExistingRecipeIngredient(newRecipeIngredient, existingRecipeIngredient, savedIngredients))
                         .orElseGet(() -> {
-                            final Ingredient mergedIngredient = mergeWithExistingIngredients(newRecipeIngredient.getIngredient(), mergedIngredients);
+                            final Ingredient mergedIngredient = mergeWithExistingIngredients(newRecipeIngredient.getIngredient(), savedIngredients);
                             newRecipeIngredient.setIngredient(mergedIngredient);
                             return newRecipeIngredient;
                         })
@@ -46,38 +49,40 @@ public class IngredientService {
 
     private RecipeIngredient updateExistingRecipeIngredient(final RecipeIngredient newRecipeIngredient,
                                                             final RecipeIngredient existingRecipeIngredient,
-                                                            final Map<Long, Ingredient> mergedIngredients) {
+                                                            final List<Ingredient> savedIngredients) {
         BeanUtils.copyProperties(newRecipeIngredient, existingRecipeIngredient);
 
-        final Ingredient mergedIngredient = mergeWithExistingIngredients(newRecipeIngredient.getIngredient(), mergedIngredients);
+        final Ingredient mergedIngredient = mergeWithExistingIngredients(newRecipeIngredient.getIngredient(), savedIngredients);
         existingRecipeIngredient.setIngredient(mergedIngredient);
 
         return existingRecipeIngredient;
     }
 
-    private Ingredient mergeWithExistingIngredients(final Ingredient newIngredient, final Map<Long, Ingredient> mergedIngredients) {
+    private Ingredient mergeWithExistingIngredients(final Ingredient newIngredient, final List<Ingredient> savedIngredients) {
         if (newIngredient == null) {
             return null;
         }
         return Optional.ofNullable(newIngredient.getId())
                 .flatMap(ingredientRepository::findById)
-                .map(existingIngredient -> updateExistingIngredient(newIngredient, existingIngredient, mergedIngredients))
-                .orElseGet(() -> mergedIngredients.values().stream()
-                        .filter(savedIngredient -> savedIngredient.getName().equals(newIngredient.getName()))
-                        .findAny()
-                        .orElseGet(() -> createNewIngredient(newIngredient, mergedIngredients))
-                );
+                .map(existingIngredient -> updateExistingIngredient(newIngredient, existingIngredient))
+                .orElseGet(() -> getSavedIngredientWithEqualNameOrCreateNew(newIngredient, savedIngredients));
     }
 
-    private static Ingredient updateExistingIngredient(final Ingredient newIngredient, final Ingredient existingIngredient, final Map<Long, Ingredient> mergedIngredients) {
+    private Ingredient getSavedIngredientWithEqualNameOrCreateNew(final Ingredient newIngredient, final List<Ingredient> savedIngredients) {
+        return savedIngredients.stream()
+                .filter(savedIngredient -> savedIngredient.getName().equals(newIngredient.getName()))
+                .findAny()
+                .orElseGet(() -> createNewIngredient(newIngredient, savedIngredients));
+    }
+
+    private static Ingredient updateExistingIngredient(final Ingredient newIngredient, final Ingredient existingIngredient) {
         BeanUtils.copyProperties(newIngredient, existingIngredient);
-        mergedIngredients.put(existingIngredient.getId(), existingIngredient);
         return existingIngredient;
     }
 
-    private Ingredient createNewIngredient(final Ingredient newIngredient, final Map<Long, Ingredient> mergedIngredients) {
+    private Ingredient createNewIngredient(final Ingredient newIngredient, final List<Ingredient> savedIngredients) {
         final Ingredient savedIngredient = ingredientRepository.save(newIngredient);
-        mergedIngredients.put(savedIngredient.getId(), savedIngredient);
+        savedIngredients.add(savedIngredient);
         return savedIngredient;
     }
 
