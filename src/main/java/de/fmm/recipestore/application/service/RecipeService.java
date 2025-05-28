@@ -19,7 +19,7 @@ public class RecipeService {
     private final RecipeMapper recipeMapper;
     private final RecipeRepository recipeRepository;
     private final TagService tagService;
-    private final IngredientService ingredientService;
+    private final RecipeIngredientService recipeIngredientService;
 
     public List<RecipeDto> getRecipes(final Long cookbookId) {
         final List<Recipe> recipes = recipeRepository.getRecipesByCookbook_Id(cookbookId);
@@ -35,7 +35,7 @@ public class RecipeService {
         final List<Tag> mergedTags = tagService.mergeWithExistingTags(recipe.getTags());
         recipe.setTags(mergedTags);
 
-        final List<RecipeIngredient> mergedRecipeIngredients = ingredientService.mergeWithExistingRecipeIngredients(recipe.getRecipeIngredients());
+        final List<RecipeIngredient> mergedRecipeIngredients = recipeIngredientService.mergeWithExistingRecipeIngredients(recipe.getRecipeIngredients());
         recipe.setRecipeIngredients(mergedRecipeIngredients);
 
         final Recipe savedRecipe = recipeRepository.save(recipe);
