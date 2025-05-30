@@ -16,6 +16,7 @@ public class Recipe {
     @Column(updatable = false)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
     @ManyToOne

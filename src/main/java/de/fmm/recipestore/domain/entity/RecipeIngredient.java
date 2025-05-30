@@ -15,6 +15,9 @@ public class RecipeIngredient {
     @Column(updatable = false)
     private Long id;
 
+    @Column(nullable = false)
+    private String uiKey;
+
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Ingredient ingredient;
 

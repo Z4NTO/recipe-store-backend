@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class RecipeIngredientDto {
     private Long id;
+    private String uiKey;
     private IngredientDto ingredient;
     private String amount;
 }
